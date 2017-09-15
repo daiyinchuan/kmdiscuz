@@ -1,0 +1,97 @@
+<!--{subtemplate common/header}-->
+<!--[name]小鱼-小米新版产品列表页[/name]-->
+<!--{eval $list = array();}-->
+<!--{eval require DISCUZ_ROOT.'./template/xiaoyu_newmi/portal/viewnum.php';}-->
+<!--{eval $wheresql = category_get_wheresql($cat);}-->
+<!--{eval $list = category_get_list($cat, $wheresql, $page);}-->
+<link rel="stylesheet" type="text/css" href="template/xiaoyu_newmi/style/base.min.css" />
+<div class="pai_header">
+		<div class="container">
+			<h2><a href="{echo getportalcategoryurl($cat[catid])}">$cat[catname]</a></h2>
+			<div class="action">
+				<div class="link" style="padding-right:5px;">
+					<a href="./" title="{lang homepage}">$_G[setting][bbname]</a>
+		<a href="$_G[setting][navs][1][filename]">{lang portal}</a>
+		<!--{loop $cat[ups] $value}--> <a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a><!--{/loop}-->
+        <!--{if ($_G['group']['allowpostarticle'] || $_G['group']['allowmanagearticle'] || $categoryperm[$catid]['allowmanage'] || $categoryperm[$catid]['allowpublish']) && empty($cat['disallowpublish'])}-->
+<a href="portal.php?mod=portalcp&ac=article&catid=$cat[catid]" style="color:#FFF; background:#656d78; padding:3px 10px; margin-top:21px; line-height:18px; border-radius:3px;">{lang article_publish}</a>
+<!--{/if}-->
+                    				</div>
+			</div>
+		</div>
+	</div>
+<div class="pai_box container pai_gallery" style="border-radius:0 0 5px 5px;">
+<div class="pai_box_content">  
+    <div class="filter" style="padding-top:0">
+           <!--{if $cat[subs]}-->
+		<dl>
+			<dt>{lang sub_category}:&nbsp;&nbsp;</dt>
+				<!--{eval $i = 1;}-->
+				<!--{loop $cat[subs] $value}-->
+				<dd {if $i != 1}style="border-left:1px solid #e6e6e6"{/if}><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></dd><!--{eval $i--;}-->
+				<!--{/loop}-->
+		</dl>
+        <!--{/if}-->
+    
+    	<!--{if $cat[others]}-->
+		<dl style="border:none">
+			<dt>{lang category_related}:</dt>
+			
+					<!--{eval $i = 1;}-->
+					<!--{loop $cat[others] $value}-->
+					<dd {if $i != 1}style="border-left:1px solid #e6e6e6"{/if}><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></dd><!--{eval $i--;}-->
+					<!--{/loop}-->
+                 
+		</dl>
+        <!--{/if}-->
+        </div>
+</div></div>
+<!--{ad/text/wp a_t}-->
+<style id="diy_style" type="text/css"></style>
+<div class="wp" style="width:1000px; margin:0 auto">
+	<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
+</div>
+<div class="main content" style="margin-bottom:30px;">
+	<div class="newsL">
+	
+		<ul class="newsList">
+			<!--{loop $list['list'] $value}-->
+			<!--{eval $highlight = article_title_style($value);}-->
+			<!--{eval $article_url = fetch_article_url($value);}-->
+            <!--{eval require DISCUZ_ROOT.'./template/xiaoyu_newmi/portal/listpic.php';}-->
+			<li><div class="pic"><a href="$article_url" target="_blank"><img src="{if $value[pic]}$value['cover']{else}template/xiaoyu_newmi/style/img/portallist_xiaoyu.jpg{/if}" alt="$value[title]" class="tn" /></a></div>						
+			<div class="txt"><h3><a href="$article_url" target="_blank" class="xi2" $highlight>$value[title]</a> <!--{if $value[status] == 1}-->({lang moderate_need})<!--{/if}--></h3>
+            <dd style="color:#bebdbd; font-size:12px;">
+						<!--{if $value[catname] && $cat[subs]}-->{lang category}: <label><a href="{$portalcategory[$value['catid']]['caturl']}" style=" color:#999">$value[catname]</a></label>&nbsp;&nbsp;<!--{/if}-->
+						<span class="xg1">发布时间：$value[dateline]</span>
+						<!--{if $_G['group']['allowmanagearticle'] || ($_G['group']['allowpostarticle'] && $value['uid'] == $_G['uid'] && (empty($_G['group']['allowpostarticlemod']) || $_G['group']['allowpostarticlemod'] && $value['status'] == 1)) || $categoryperm[$value['catid']]['allowmanage']}-->
+						<span class="xg1">
+							<span class="pipe">|</span>
+							<label><a href="portal.php?mod=portalcp&ac=article&op=edit&aid=$value[aid]">{lang edit}</a></label>
+							<span class="pipe">|</span>
+							<label><a href="portal.php?mod=portalcp&ac=article&op=delete&aid=$value[aid]" id="article_delete_$value[aid]" onclick="showWindow(this.id, this.href, 'get', 0);">{lang delete}</a></label>
+						</span>
+						<!--{/if}-->
+					</dd>
+            <dd class="xiaoyu_summary">$value[summary]</dd>
+            <dd class="event_ft cl">
+            <p class="focuspeople">共有<strong>{echo get_article_num($value[aid],'viewnum')}</strong>人关注</p>
+          	<a target="_blank" href="$article_url"> 立即查看</a></div>
+            
+             </dd>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	
+		<!--{if $list['multi']}--><div class="pgs xiaoyu_pgs cl" style="border-radius:5px; margin-top:15px;">{$list['multi']}</div><!--{/if}-->
+	</div>
+  
+    
+<div class="cl"></div>
+</div>
+	
+<!--{template common/footer}-->
+
+
+
+

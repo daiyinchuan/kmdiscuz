@@ -1,0 +1,268 @@
+<!--{template common/header}-->
+<!--[name]小鱼-小米新版文章页[/name]-->
+<script type="text/javascript" src="{$_G['setting']['jspath']}forum_viewthread.js?{VERHASH}"></script>
+<script type="text/javascript">zoomstatus = parseInt($_G['setting']['zoomstatus']), imagemaxwidth = '{$_G['setting']['imagemaxwidth']}', aimgcount = new Array();</script>
+<div id="pt" class="bm xiaoyu_view_pt cl">
+	<div class="z">
+		<a style="font-size: 18px;" href="{echo getportalcategoryurl($cat[catid])}">$cat[catname]</a>
+	</div>
+    
+     <!--{if ($_G['group']['allowpostarticle'] || $_G['group']['allowmanagearticle'] || $categoryperm[$catid]['allowmanage'] || $categoryperm[$catid]['allowpublish']) && empty($cat['disallowpublish'])}-->
+     	<div class="y"><a class="btn sendtheme" href="portal.php?mod=portalcp&ac=article&catid=$cat[catid]">+ {lang article_publish}</a></div>		
+    <!--{/if}-->
+</div>
+
+<!--{hook/view_article_top}-->
+<!--{ad/text/wp a_t}-->
+<style id="diy_style" type="text/css"></style>		
+<style>
+.xiaoyu_main_left{ float:left; width:740px;}
+.xiaoyu_main_left .vw{ background:#FFF; border:1px solid #e6e6e6; margin-bottom:10px;}
+.xiaoyu_related_article{background:#FFF; border:1px solid #e6e6e6; margin-bottom:10px;padding:10px;}
+.xiaoyu_related_article .bm_h{ background:#FFF;border-bottom:1px solid #e6e6e6; }
+
+.newsL{ width:710px;}
+.contain_left{ float:right; width:250px;}
+.left_wrap{background:#fff;margin-bottom:15px;}
+.left_wrap .center{position:absolute;left:0;width:100%;height:100%;text-align:center;background:#fff;z-index:0}
+.left_wrap .circle{width:100%;position:absolute;bottom:8px;z-index:11;text-align:center}
+.left_wrap .circle span{display:inline-block;width:8px;height:8px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;margin:0 3px;background:#000;cursor:pointer;opacity:.5;filter:alpha(opacity=50)}
+.left_wrap .circle span.current{opacity:1;filter:alpha(opacity=100)}
+.con{border:1px solid #e6e6e6;padding:0 19px 25px 29px}
+.sidebarplate{border:1px solid #e6e6e6;overflow:hidden;font-size:14px}
+.sidebarplate .sidebarplate_tab{height:40px;line-height:40px;background:#fafafa; margin-top:-1px;font-weight:bold}
+.sidebarplate .sidebarplate_tab .tab{width:252px;margin-left:-1px;color:#333}
+.sidebarplate .sidebarplate_tab .tab span{cursor:pointer;float:left;width:125px;border-left:1px solid #e8e8e8;text-align:center}
+.sidebarplate .sidebarplate_tab .tab span.on{height:36px;line-height:32px;border-top:4px solid #ccd1d9;background:#fff}
+.sidebarplate ul{display:none;width:252px;margin-right:-1px}
+.sidebarplate ul li{float:left;width:125px;height:36px;line-height:36px;border-right:1px solid #e5e5e5;border-top:1px solid #e5e5e5;text-align:center}
+.sidebarplate ul li a{color:#333;display:block}
+.sidebarplate ul li a:hover{color:#ce3e3a}
+.sidebarplate ul li.more{width:251px}
+.sidebarplate ul.on{display:block}
+.xm_index_info{height:112px;overflow:hidden;margin:30px 0 0 0;height:120px\9}
+.xm_index_info li{width:86px;height:58px;float:left;border-bottom:1px solid #e6e6e6;border-left:1px solid #e6e6e6;margin:0 0 -1px -1px;padding-top:10px;*width:94px}
+.xm_index_info li span{display:block;text-align:center}
+.xm_index_info li .num{color:#ff8b3d;font-size:18px;line-height:18px;margin-bottom:10px}
+.xm_index_info li .txt{font-size:12px;color:#8c8c8c;line-height:normal;margin-bottom:10px}
+.xm_index_info li:nth-child(1),.xm_index_info li:nth-child(2){padding-top:0}
+.xm_index_info li:nth-child(2),.xm_index_info li:nth-child(4){padding-left:8px;width:95px}
+.xm_index_info li:nth-child(1),.xm_index_info li:nth-child(3){padding-right:10px}
+.shareActive{width:190px;margin:20px auto 0}
+.shareActive .shareActive_img img{width:190px;height:100px;display:block}
+.shareActive .shareActive_txt{font-size:12px;line-height:14px;text-align:center;display:block;margin-top:10px}
+.xiaoyu_otherslist li{ height:25px; line-height:25px;}
+.xiaoyu_otherslist li a{ color:#434a54}
+.xg1, .xg1 a{    color: #8c8c8c !important;}
+</style>
+
+
+<div class="main cl">
+	<div class="xiaoyu_main_left">
+		<div class="vw">
+			<div class="h hm">
+				<h1 class="ph">$article[title] <!--{if $article['status'] == 1}-->({lang moderate_need})<!--{elseif $article['status'] == 2}-->({lang ignored})<!--{/if}--></h1>
+				<p class="xg1">
+					$article[dateline]<span class="pipe">|</span>
+					{lang view_publisher}: <a href="home.php?mod=space&uid=$article[uid]">$article[username]</a><span class="pipe">|</span>
+					{lang view_views}: <em id="_viewnum"><!--{if $article[viewnum] > 0}-->$article[viewnum]<!--{else}-->0<!--{/if}--></em><span class="pipe">|</span>
+					{lang view_comments}: <!--{if $article[commentnum] > 0}--><a href="$common_url" title="{lang view_all_comments}"><em id="_commentnum">$article[commentnum]</em></a><!--{else}-->0<!--{/if}-->
+					<!--{if $article[author]}--><span class="pipe">|</span>{lang view_author_original}: $article[author]<!--{/if}-->
+					<!--{if $article[from]}--><span class="pipe">|</span>{lang from}: <!--{if $article[fromurl]}--><a href="$article[fromurl]" target="_blank">$article[from]</a><!--{else}-->$article[from]<!--{/if}--><!--{/if}-->
+
+					<!--{if $_G['group']['allowmanagearticle'] || ($_G['group']['allowpostarticle'] && $article['uid'] == $_G['uid'] && (empty($_G['group']['allowpostarticlemod']) || $_G['group']['allowpostarticlemod'] && $article['status'] == 1)) || $categoryperm[$value['catid']]['allowmanage']}-->
+						<span class="pipe">|</span><a href="portal.php?mod=portalcp&ac=article&op=edit&aid=$article[aid]">{lang edit}</a>
+						<!--{if $article[status]>0 && ($_G['group']['allowmanagearticle'] || $categoryperm[$value['catid']]['allowmanage'])}-->
+							<span class="pipe">|</span><a href="portal.php?mod=portalcp&ac=article&op=verify&aid=$article[aid]" id="article_verify_$article[aid]" onclick="showWindow(this.id, this.href, 'get', 0);">{lang moderate}</a>
+						<!--{else}-->
+							<span class="pipe">|</span><a href="portal.php?mod=portalcp&ac=article&op=delete&aid=$article[aid]" id="article_delete_$article[aid]" onclick="showWindow(this.id, this.href, 'get', 0);">{lang delete}</a>
+						<!--{/if}-->
+					<!--{/if}-->
+					<!--{hook/view_article_subtitle}-->
+				</p>
+			</div>
+
+			<!--[diy=diysummarytop]--><div id="diysummarytop" class="area"></div><!--[/diy]-->
+
+			<!--{if $article[summary] && empty($cat[notshowarticlesummay])}--><div class="s"><div><strong>{lang article_description}</strong>: $article[summary]</div><!--{hook/view_article_summary}--></div><!--{/if}-->
+
+			<!--[diy=diysummarybottom]--><div id="diysummarybottom" class="area"></div><!--[/diy]-->
+
+			<div class="d">
+
+				<!--[diy=diycontenttop]--><div id="diycontenttop" class="area"></div><!--[/diy]-->
+
+				<table cellpadding="0" cellspacing="0" class="vwtb"><tr><td id="article_content">
+					<!--{ad/article/a_af/1}-->
+					<!--{if $content[title]}-->
+					<div class="vm_pagetitle xw1">$content[title]</div>
+					<!--{/if}-->
+					$content[content]
+				</td></tr></table>
+				<!--{hook/view_article_content}-->
+				<!--{if $multi}--><div class="ptw pbw cl">$multi</div><!--{/if}-->
+
+				<!--[diy=diycontentbottom]--><div id="diycontentbottom" class="area"></div><!--[/diy]-->
+
+				<script type="text/javascript" src="{$_G[setting][jspath]}home.js?{VERHASH}"></script>
+				<div id="click_div">
+					<!--{template home/space_click}-->
+				</div>
+
+				<!--{if !empty($contents)}-->
+				<div id="inner_nav" class="ptn xs1">
+					<h3>{lang article_inner_navigation}</h3>
+					<ul class="xl xl2 cl">
+						<!--{loop $contents $key $value}-->
+						<!--{eval $curpage = $key+1;}-->
+						<!--{eval $inner_view_url = helper_page::mpurl($viewurl, '&page=', $curpage);}-->
+						<li>&bull; <a href="$inner_view_url"{if $key === $start} class="xi1"{/if}>{lang article_inner_page_pre} {$curpage} {lang article_inner_page} $value[title]</a></li>
+						<!--{/loop}-->
+					</ul>
+				</div>
+				<!--{/if}-->
+
+				<!--[diy=diycontentclickbottom]--><div id="diycontentclickbottom" class="area"></div><!--[/diy]-->
+
+			</div>
+			<!--{if !empty($aimgs[$content[pid]])}-->
+				<script type="text/javascript" reload="1">aimgcount[{$content[pid]}] = [<!--{echo implode(',', $aimgs[$content[pid]]);}-->];attachimgshow($content[pid]);</script>
+			<!--{/if}-->
+
+			<!--{if !empty($_G['setting']['pluginhooks']['view_share_method'])}-->
+				<div class="tshare cl">
+					<strong>{lang viewthread_share_to}:</strong>
+					<!--{hook/view_share_method}-->
+				</div>
+			<!--{/if}-->
+
+			<div class="o cl ptm pbm">
+				<!--{hook/view_article_op_extra}-->
+				<a href="home.php?mod=spacecp&ac=favorite&type=article&id=$article[aid]&handlekey=favoritearticlehk_{$article[aid]}" id="a_favorite" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr ofav">{lang favorite}</a>
+				<!--{if helper_access::check_module('share')}-->
+				<a href="home.php?mod=spacecp&ac=share&type=article&id=$article[aid]&handlekey=sharearticlehk_{$article[aid]}" id="a_share" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr">{lang share}</a>
+				<!--{/if}-->
+				<a href="misc.php?mod=invite&action=article&id=$article[aid]" id="a_invite" onclick="showWindow('invite', this.href, 'get', 0);" class="oshr oivt">{lang invite}</a>
+				<!--{if $_G['group']['allowmanagearticle'] || ($_G['group']['allowpostarticle'] && $article['uid'] == $_G['uid'] && (empty($_G['group']['allowpostarticlemod']) || $_G['group']['allowpostarticlemod'] && $article['status'] == 1)) || $categoryperm[$value['catid']]['allowmanage']}-->
+					<a href="portal.php?mod=portalcp&ac=article&op=edit&aid=$article[aid]">{lang edit}</a><span class="pipe">|</span>
+					<a  id="related_article" href="portal.php?mod=portalcp&ac=related&aid=$article[aid]&catid=$article[catid]&update=1" onclick="showWindow(this.id, this.href, 'get', 0);return false;">{lang article_related}</a><span class="pipe">|</span>
+					<!--{if $article[status]>0 && ($_G['group']['allowmanagearticle'] || $categoryperm[$value['catid']]['allowmanage'])}-->
+						<a href="portal.php?mod=portalcp&ac=article&op=verify&aid=$article[aid]" id="article_verify_$article[aid]" onclick="showWindow(this.id, this.href, 'get', 0);">{lang moderate}</a>
+					<!--{else}-->
+						<a href="portal.php?mod=portalcp&ac=article&op=delete&aid=$article[aid]" id="article_delete_$article[aid]" onclick="showWindow(this.id, this.href, 'get', 0);">{lang delete}</a>
+					<!--{/if}-->
+					<span class="pipe">|</span>
+				<!--{/if}-->
+				<!--{if $article[status]==0 && ($_G['group']['allowdiy']  || getstatus($_G['member']['allowadmincp'], 4) || getstatus($_G['member']['allowadmincp'], 5) || getstatus($_G['member']['allowadmincp'], 6))}-->
+				<a href="portal.php?mod=portalcp&ac=portalblock&op=recommend&idtype=aid&id=$article[aid]" onclick="showWindow('recommend', this.href, 'get', 0)">{lang blockdata_recommend}</a><span class="pipe">|</span>
+				<!--{/if}-->
+			</div>
+			<!--{if $article['preaid'] || $article['nextaid']}-->
+			<div class="pren pbm cl">
+				<!--{if $article['prearticle']}--><em>{lang pre_article}<a href="{$article['prearticle']['url']}">{$article['prearticle']['title']}</a></em><!--{/if}-->
+				<!--{if $article['nextarticle']}--><em>{lang next_article}<a href="{$article['nextarticle']['url']}">{$article['nextarticle']['title']}</a></em><!--{/if}-->
+			</div>
+			<!--{/if}-->
+		</div>
+
+	<!--[diy=diycontentrelatetop]--><div id="diycontentrelatetop" class="area"></div><!--[/diy]-->
+
+		<!--{ad/article/mbm hm/2}--><!--{ad/article/mbm hm/3}-->
+
+		<!--{if $article['related']}-->
+		<div id="related_article" class="xiaoyu_related_article">
+			<div class="bm_h cl">
+				<h3>{lang view_related}</h3>
+			</div>
+			<div class="bm_c">
+				<ul class="xl xl2 cl" id="raid_div">
+				<!--{loop $article['related'] $raid $rvalue}-->
+					<input type="hidden" value="$raid" />
+					<li>&bull; <a href="{$rvalue[uri]}">{$rvalue[title]}</a></li>
+				<!--{/loop}-->
+				</ul>
+			</div>
+		</div>
+		<!--{/if}-->
+
+		<!--[diy=diycontentrelate]--><div id="diycontentrelate" class="area"></div><!--[/diy]-->
+
+		<!--{if $article['allowcomment']==1}-->
+			<!--{eval $data = &$article}-->
+			<!--{subtemplate portal/portal_comment}-->
+		<!--{/if}-->
+
+		<!--[diy=diycontentcomment]--><div id="diycontentcomment" class="area"></div><!--[/diy]-->
+   </div>
+
+  <div class="contain_left y">
+    <div class="left_wrap"> 
+    <div class="sidebarplate"> 
+     <!--[diy=xiaoyruSwapTab]-->
+     <div id="xiaoyruSwapTab" class="area"></div>
+     <!--[/diy]--> 
+     <div class="tab-content"> 
+      <ul class="on"> 
+       <!--[diy=xiaoyrutabqh]-->
+       <div id="xiaoyrutabqh" class="area"></div>
+       <!--[/diy]--> 
+      </ul> 
+      <ul> 
+       <!--[diy=xiaoyrutabqh1]-->
+       <div id="xiaoyrutabqh1" class="area"></div>
+       <!--[/diy]--> 
+      </ul> 
+     </div> 
+    </div> 
+    </div>
+   <!--{if $cat[others]}--> 
+   <div class="left_wrap"> 
+    <div class="con"> 
+     <div class="hotspot"> 
+      <h3>{lang category_related}</h3> 
+     </div> 
+     <ul class="xl xl2 xiaoyu_otherslist cl"> 
+      <!--{loop $cat[others] $value}--> 
+      <li><a href="{echo getportalcategoryurl($value[catid])}">$value[catname]</a></li> 
+      <!--{/loop}--> 
+     </ul> 
+    </div> 
+   </div> 
+   <!--{/if}--> 
+   <!--{if $cat[subs]}--> 
+   <div class="left_wrap"> 
+    <div class="con"> 
+     <div class="hotspot"> 
+      <h3>{lang sub_category}</h3> 
+     </div> 
+     <ul class="xl xl2 xiaoyu_otherslist cl"> 
+      <!--{loop $cat[subs] $value}--> 
+      <li><a href="{echo getportalcategoryurl($value[catid])}">$value[catname]</a></li> 
+      <!--{/loop}--> 
+     </ul> 
+    </div> 
+   </div> 
+   <!--{/if}--> 
+ 
+   <div class="left_wrap"> 
+    <div class="con"> 
+     <!--[diy=xiaoyruhots]-->
+     <div id="xiaoyruhots" class="area"></div>
+     <!--[/diy]--> 
+    </div> 
+   </div> 
+   <div class="left_wrap"> 
+    <div class="con"> 
+     <div class="hotspot"> 
+      <!--[diy=xiaoyrutj]-->
+      <div id="xiaoyrutj" class="area"></div>
+      <!--[/diy]--> 
+     </div> 
+    </div> 
+   </div> 
+  </div>
+  
+</div>
+</div>
+
+<!--{template common/footer}-->

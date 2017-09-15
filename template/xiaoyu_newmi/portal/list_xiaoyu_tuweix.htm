@@ -1,0 +1,114 @@
+<!--{subtemplate common/header}-->
+<!--[name]小鱼-小米新版图文列表页[/name]-->
+<!--{eval $list = array();}-->
+<!--{eval require DISCUZ_ROOT.'./template/xiaoyu_newmi/portal/viewnum.php';}-->
+<!--{eval $wheresql = category_get_wheresql($cat);}-->
+<!--{eval $list = category_get_list($cat, $wheresql, $page);}-->
+<link rel="stylesheet" type="text/css" href="template/xiaoyu_newmi/style/base.min.css" />
+<style>
+body{background:#FFF}
+.wan_banner{background: url("template/xiaoyu_newmi/style/img/tuweipic.jpg") no-repeat;height: 480px;margin-top: -1px;}
+.catname{width:1000px;margin:auto;clear:both;}
+.kym_catnamez{float:left;width:250px;height:80px;line-height:70px;margin-right:5px;text-align:left;overflow:hidden;font-size:45px;font-weight: normal;font-family: "Microsoft Yahei";color:#333333;}
+.kym_catnamez li{float:left;height: 80px;}
+.kym_catnamey{float:left;width:745px;padding-top:22px;}
+.kym_catnamey dl{padding:2px 10px 2px 80px}
+.kym_catnamey dt{color: #000;display: inline;float: left;font-size: 14px;margin-left: -80px;position: relative;}
+.kym_catnamey ul li{display: inline;float: left;height: 22px;line-height: 22px;margin: 0 10px 5px 0;}
+.kym_catnamey ul li a{color: #666;display: block;font-size: 14px;padding: 0 15px;}
+#hd{width:100%;background:#DDE1E7;}
+.xiaoyuwp{width:1000px;margin:0 auto;}
+.pai_gallery .filter{margin:10px 0 0;border-bottom:1px solid #e6e6e6;}
+ul.newsList{width:1020px;margin-bottom:40px;}
+ul.newsList li{border:1px solid #e6e6e6;width:488px;padding:0;margin:20px 20px 0 0;float:left;clear:none;border-radius:0}
+ul.newsList li .pic{width:488px;height:164px;border-radius:0;overflow:hidden}
+ul.newsList li .pic img{width:488px;height:164px;overflow:hidden;border-radius:0}
+ul.newsList li .txt{padding:16px 20px 20px;width:448px;}
+.xiaoyu_summary{height: 72px;line-height: 24px;color:#8c8c8c;margin-top: 5px;overflow: hidden;}
+ul.newsList li h3{height:28px;line-height:28px;padding-bottom:0}
+ul.newsList li h3 a{color:#333;font-size:16px;}
+</style>
+
+<div class="pai_header">
+		<div class="container">
+			<h2><a href="{echo getportalcategoryurl($cat[catid])}">$cat[catname]</a></h2>
+			<div class="action">
+				<div class="link" style="padding-right:5px;">
+					<a href="./" title="{lang homepage}">$_G[setting][bbname]</a>
+		<a href="$_G[setting][navs][1][filename]">{lang portal}</a>
+		<!--{loop $cat[ups] $value}--> <a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a><!--{/loop}-->
+        <!--{if ($_G['group']['allowpostarticle'] || $_G['group']['allowmanagearticle'] || $categoryperm[$catid]['allowmanage'] || $categoryperm[$catid]['allowpublish']) && empty($cat['disallowpublish'])}-->
+<a href="portal.php?mod=portalcp&ac=article&catid=$cat[catid]" style="color:#FFF; background:#656d78; padding:3px 10px; margin-top:21px; line-height:18px; border-radius:3px;">{lang article_publish}</a>
+<!--{/if}-->
+                    				</div>
+			</div>
+		</div>
+	</div>
+    <div class="wan_banner"></div>
+<div class="pai_box container pai_gallery" style="border-radius:0 0 5px 5px;">
+<div class="pai_box_content">  
+    <div class="filter" style="padding-top:0">
+           <!--{if $cat[subs]}-->
+		<dl>
+			<dt>{lang sub_category}:&nbsp;&nbsp;</dt>
+				<!--{eval $i = 1;}-->
+				<!--{loop $cat[subs] $value}-->
+				<dd {if $i != 1}style="border-left:1px solid #e6e6e6"{/if}><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></dd><!--{eval $i--;}-->
+				<!--{/loop}-->
+		</dl>
+        <!--{/if}-->
+    
+    	<!--{if $cat[others]}-->
+		<dl style="border:none">
+			<dt>{lang category_related}:</dt>
+			
+					<!--{eval $i = 1;}-->
+					<!--{loop $cat[others] $value}-->
+					<dd {if $i != 1}style="border-left:1px solid #e6e6e6"{/if}><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></dd><!--{eval $i--;}-->
+					<!--{/loop}-->
+                 
+		</dl>
+        <!--{/if}-->
+        </div>
+</div></div>
+<!--{ad/text/wp a_t}-->
+<style id="diy_style" type="text/css"></style>
+<div class="wp" style="width:1000px; margin:0 auto">
+	<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
+</div>
+<div class="main content" style="margin-bottom:30px;">
+	<div class="newsL">
+		<ul class="newsList cl">
+			<!--{loop $list['list'] $value}-->
+			<!--{eval $highlight = article_title_style($value);}-->
+            <!--{eval require DISCUZ_ROOT.'./template/xiaoyu_newmi/portal/listpic.php';}-->
+			<!--{eval $article_url = fetch_article_url($value);}-->
+			<li><div class="pic"><a href="$article_url" target="_blank"><img src="{if $value[pic]}$value['cover']{else}template/xiaoyu_newmi/style/img/portallist_xiaoyu.jpg{/if}" alt="$value[title]" class="tn" /></a></div>						
+			<div class="txt"><h3><a href="$article_url" target="_blank" class="xi2" $highlight>$value[title]</a> <!--{if $value[status] == 1}-->({lang moderate_need})<!--{/if}--></h3>
+            <dd style="color:#bebdbd; font-size:12px; line-height:20px; height:20px;">
+						<!--{if $value[catname] && $cat[subs]}-->{lang category}: <label><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></label>&nbsp;&nbsp;<!--{/if}-->
+						<span class="xg1">$value[dateline]</span>
+						<!--{if $_G['group']['allowmanagearticle'] || ($_G['group']['allowpostarticle'] && $value['uid'] == $_G['uid'] && (empty($_G['group']['allowpostarticlemod']) || $_G['group']['allowpostarticlemod'] && $value['status'] == 1)) || $categoryperm[$value['catid']]['allowmanage']}-->
+						<span class="xg1">
+							<span class="pipe">|</span>
+							<label><a href="portal.php?mod=portalcp&ac=article&op=edit&aid=$value[aid]">{lang edit}</a></label>
+							<span class="pipe">|</span>
+							<label><a href="portal.php?mod=portalcp&ac=article&op=delete&aid=$value[aid]" id="article_delete_$value[aid]" onclick="showWindow(this.id, this.href, 'get', 0);">{lang delete}</a></label>
+						</span>
+						<!--{/if}-->
+					</dd>
+            <dd class="xiaoyu_summary">$value[summary]</dd>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	
+		<!--{if $list['multi']}--><div class="pgs xiaoyu_pgs cl" style="border-radius:5px; margin-top:15px;">{$list['multi']}</div><!--{/if}-->
+	</div>  
+<div class="cl"></div>
+</div>
+	
+<!--{template common/footer}-->
+
+
+
+

@@ -1,0 +1,91 @@
+<!--{subtemplate common/header}-->
+<!--[name]小鱼-小米新版图库列表页[/name]-->
+<!--{eval $list = array();}-->
+<!--{eval $wheresql = category_get_wheresql($cat);}-->
+<!--{eval $list = category_get_list($cat, $wheresql, $page);}-->
+<link rel="stylesheet" type="text/css" href="template/xiaoyu_newmi/style/base.min.css" />
+<style id="diy_style" type="text/css"></style>
+
+<div class="pai_header">
+		<div class="container">
+			<h2><a href="{echo getportalcategoryurl($cat[catid])}">$cat[catname]</a></h2>
+			<div class="action">
+				<div class="link" style="padding-right:5px;">
+					<a href="./" title="{lang homepage}">$_G[setting][bbname]</a>
+		<a href="$_G[setting][navs][1][filename]">{lang portal}</a>
+		<!--{loop $cat[ups] $value}--> <a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a><!--{/loop}-->
+        <!--{if ($_G['group']['allowpostarticle'] || $_G['group']['allowmanagearticle'] || $categoryperm[$catid]['allowmanage'] || $categoryperm[$catid]['allowpublish']) && empty($cat['disallowpublish'])}-->
+<a href="portal.php?mod=portalcp&ac=article&catid=$cat[catid]" style="color:#FFF; background:#656d78; padding:3px 10px; margin-top:21px; line-height:18px; border-radius:3px;">{lang article_publish}</a>
+<!--{/if}-->
+                    				</div>
+			</div>
+		</div>
+	</div>
+<div class="pai_box container pai_gallery">
+<div class="pai_box_content cl">
+<div class="filter">
+           <!--{if $cat[subs]}-->
+		<dl>
+			<dt>{lang sub_category}:&nbsp;&nbsp;</dt>
+				<!--{eval $i = 1;}-->
+				<!--{loop $cat[subs] $value}-->
+				<dd {if $i != 1}style="border-left:1px solid #e6e6e6"{/if}><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></dd><!--{eval $i--;}-->
+				<!--{/loop}-->
+		</dl>
+        <!--{/if}-->
+    
+    	<!--{if $cat[others]}-->
+		<dl>
+			<dt>{lang category_related}:</dt>
+			
+					<!--{eval $i = 1;}-->
+					<!--{loop $cat[others] $value}-->
+					<dd {if $i != 1}style="border-left:1px solid #e6e6e6"{/if}><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></dd><!--{eval $i--;}-->
+					<!--{/loop}-->
+                 
+		</dl>
+        <!--{/if}-->
+        </div>
+        <ul class="pai_photo_grid J_photo_grid">
+        	<!--{loop $list['list'] $value}-->
+			<!--{eval $highlight = article_title_style($value);}-->
+			<!--{eval $article_url = fetch_article_url($value);}-->
+            <!--{eval $value[summary] = getstr(strip_tags($value[summary]), 140);}-->	
+        <li>
+                <a href="$article_url" target="_blank">
+                    <img src="{if $value[pic]}$value[pic]{else}template/xiaoyu_newmi/style/img/portallist_thumb.jpg{/if}" alt="$value[title]" width="225" height="225" />
+                    <p>
+    						<strong>$value[title]</strong>
+                            <em>
+                                                                							</em>
+							<span>$value[dateline]</span>
+                    </p>
+                    <cite></cite>
+                </a>
+                <div class="like">
+                <!--{if $value[catname] && $cat[subs]}-->{lang category}: <label><a href="{$portalcategory[$value['catid']]['caturl']}">$value[catname]</a></label>&nbsp;&nbsp;<!--{/if}-->
+						<!--{if $_G['group']['allowmanagearticle'] || ($_G['group']['allowpostarticle'] && $value['uid'] == $_G['uid'] && (empty($_G['group']['allowpostarticlemod']) || $_G['group']['allowpostarticlemod'] && $value['status'] == 1)) || $categoryperm[$value['catid']]['allowmanage']}-->
+						<span>
+							<span class="pipe"></span>
+							<label><a href="portal.php?mod=portalcp&ac=article&op=edit&aid=$value[aid]">{lang edit}</a></label>
+							<span class="pipe"></span>
+							<label><a href="portal.php?mod=portalcp&ac=article&op=delete&aid=$value[aid]" id="article_delete_$value[aid]" onclick="showWindow(this.id, this.href, 'get', 0);">{lang delete}</a></label>
+						</span>
+						<!--{/if}--></div>
+            </li>
+            <!--{/loop}-->
+            </ul>
+            
+			<!--{if $list['multi']}--><div class="pgs xiaoyu_pgs cl">{$list['multi']}</div><!--{/if}-->
+            
+            </div></div>
+<div class="wp" style="width:1000px; margin:0 auto">
+	<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
+</div>
+
+	
+<!--{template common/footer}-->
+
+
+
+
