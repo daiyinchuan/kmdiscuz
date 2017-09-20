@@ -2,8 +2,8 @@
 .clearfix:before,.clearfix:after{display:table;content:"";line-height:0}
 .clearfix:after{clear:both}
 .btn{display:inline-block;*display:inline;*zoom:1;margin-bottom:0;font-size:14px;height:38px;line-height:38px;text-align:center;cursor:pointer;background-color:#ff5555;border:1px solid #ff5555;color:#fff;padding:0;width:148px}
-.btn:hover,.btn:focus{color:#fff;outline:0;text-decoration:none;background-color:#ff7519}
-.btn.active,.btn:active{outline:0;background-color:#ff7519;-webkit-box-shadow:inset 0 2px 4px rgba(0,0,0,.15);-moz-box-shadow:inset 0 2px 4px rgba(0,0,0,.15);box-shadow:inset 0 2px 4px rgba(0,0,0,.15)}
+.btn:hover,.btn:focus{color:#fff;outline:0;text-decoration:none;background-color:#ff5555}
+.btn.active,.btn:active{outline:0;background-color:#ff5555;-webkit-box-shadow:inset 0 2px 4px rgba(0,0,0,.15);-moz-box-shadow:inset 0 2px 4px rgba(0,0,0,.15);box-shadow:inset 0 2px 4px rgba(0,0,0,.15)}
 .btn.disabled,.btn[disabled]{cursor:default;opacity:.65;filter:alpha(opacity=65);-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;color:#e5e9ec;background:#ccd0d9}
 button.btn,input.btn{box-sizing:content-box}
 .btn-block{display:block;width:100%;padding-left:0;padding-right:0;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}
