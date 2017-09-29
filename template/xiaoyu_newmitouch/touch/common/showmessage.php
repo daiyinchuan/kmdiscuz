@@ -6,7 +6,7 @@
 	<!--{eval dheader('Location:member.php?mod=logging&action=login');exit;}-->
 	<!--{/if}-->
 <!--{/if}-->
-<!--{template common/header}-->
+<!--{template common/header}--><!--{if $param['ktl_success']}-->	<script type="text/javascript">		window.location="<!--{$param['ktl_url']}-->";	</script><!--{/if}-->
 <!--{if $_G['inajax']}-->
 <div class="tip" style="height:150px;">
 	<dt id="messagetext">

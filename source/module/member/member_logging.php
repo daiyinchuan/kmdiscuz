@@ -13,10 +13,9 @@ if(!defined('IN_DISCUZ')) {
 
 define('NOROBOT', TRUE);
 
-if(!in_array($_GET['action'], array('login', 'logout'))) {
+if(!in_array($_GET['action'], array('login', 'logout','ktokenlogin'))) {
 	showmessage('undefined_action');
 }
-
 $ctl_obj = new logging_ctl();
 $ctl_obj->setting = $_G['setting'];
 $method = 'on_'.$_GET['action'];

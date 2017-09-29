@@ -1,4 +1,4 @@
-<?php exit;?>
+<?php exit ; ?>
 <!--{hook/global_footer_mobile}-->
 <!--{eval $useragent = strtolower($_SERVER['HTTP_USER_AGENT']);$clienturl = ''}-->
 <!--{if strpos($useragent, 'iphone') !== false || strpos($useragent, 'ios') !== false}-->
@@ -10,20 +10,27 @@
 <!--{/if}-->
 <div id="mask" style="display:none;"></div></div>
 <!--{if !$nofooter}-->
-<div class="footer"> 
-   <div class="footerdown"> 
-    <div class="wrap_990"> 
-     <a title="$_G[setting][bbname]" href="$nav" class="milogo"></a>		<span>copyright@2017 武汉原研三品电子商务有限公司 保留所有权利</span>	
-    </div> 
-   </div> 
-  </div>
+<div class="footer">
+	<div class="footerdown">
+		<div class="wrap_990">
+			<a title="$_G[setting][bbname]" href="$nav" class="milogo"></a>
+			<div style="text-align: left;line-height: 1.5em;">
+				武汉原研三品电子商务有限公司
+			</div>
+			<div style="text-align: left;line-height: 1.5em;">
+				保留所有权利&nbsp;&nbsp;copyright@2017
+			</div>
+		</div>
+	</div>
+</div>
+</div>
 <!--{/if}-->
 </body>
 </html>
 <!--{eval updatesession();}-->
 <!--{if defined('IN_MOBILE')}-->
-	<!--{eval output();}-->
+<!--{eval output();}-->
 <!--{else}-->
-	<!--{eval output_preview();}-->
+<!--{eval output_preview();}-->
 <!--{/if}-->
 

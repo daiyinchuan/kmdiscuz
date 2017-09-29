@@ -65,6 +65,60 @@ function userlogin($username, $password, $questionid, $answer, $loginfield = 'us
 	return $return;
 }
 
+function userktokenlogin($username, $password, $questionid, $answer, $loginfield = 'username', $ip = '') {
+	$return = array();
+
+	if($loginfield == 'uid' && getglobal('setting/uidlogin')) {
+		$isuid = 1;
+	} elseif($loginfield == 'email') {
+		$isuid = 2;
+	} elseif($loginfield == 'auto') {
+		$isuid = 3;
+	} else {
+		$isuid = 0;
+	}
+
+	if(!function_exists('uc_user_login')) {
+		loaducenter();
+	}
+	if($isuid == 3) {
+		if(!strcmp(dintval($username), $username) && getglobal('setting/uidlogin')) {
+			$return['ucresult'] = uc_user_login($username, $password, 1, 1, $questionid, $answer, $ip);
+		} elseif(isemail($username)) {
+			$return['ucresult'] = uc_user_login($username, $password, 2, 1, $questionid, $answer, $ip);
+		}
+		if($return['ucresult'][0] <= 0 && $return['ucresult'][0] != -3) {
+			$return['ucresult'] = uc_user_login(addslashes($username), $password, 0, 1, $questionid, $answer, $ip);
+		}
+	} else {
+		$return['ucresult'] = uc_user_ktokenlogin(addslashes($username), $password, $isuid, 1, $questionid, $answer, $ip);
+	}
+	$tmp = array();
+	$duplicate = '';
+	list($tmp['uid'], $tmp['username'], $tmp['password'], $tmp['email'], $duplicate) = $return['ucresult'];
+	$return['ucresult'] = $tmp;
+	if($duplicate && $return['ucresult']['uid'] > 0 || $return['ucresult']['uid'] <= 0) {
+		$return['status'] = 0;
+		return $return;
+	}
+
+	$member = getuserbyuid($return['ucresult']['uid'], 1);
+	if(!$member || empty($member['uid'])) {
+		$return['status'] = -1;
+		return $return;
+	}
+	$return['member'] = $member;
+	$return['status'] = 1;
+	if($member['_inarchive']) {
+		C::t('common_member_archive')->move_to_master($member['uid']);
+	}
+	if($member['email'] != $return['ucresult']['email']) {
+		C::t('common_member')->update($return['ucresult']['uid'], array('email' => $return['ucresult']['email']));
+	}
+
+	return $return;
+}
+
 function setloginstatus($member, $cookietime) {
 	global $_G;
 	$_G['uid'] = intval($member['uid']);

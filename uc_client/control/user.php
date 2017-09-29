@@ -101,7 +101,7 @@ class usercontrol extends base {
 		}
 		return $status;
 	}
-
+	function onktokenlogin() {		$this->init_input();		$isuid = $this->input('isuid');		$username = $this->input('username');		$password = $this->input('password');		$checkques = $this->input('checkques');		$questionid = $this->input('questionid');		$answer = $this->input('answer');		$ip = $this->input('ip');		if($isuid == 1) {			$user = $_ENV['user']->get_user_by_uid($username);		} elseif($isuid == 2) {			$user = $_ENV['user']->get_user_by_email($username);		} else {			$user = $_ENV['user']->get_user_by_username($username);		}		$passwordmd5 = preg_match('/^\w{32}$/', $password) ? $password : md5($password);		if(empty($user)) {			$status = -1;		} /*elseif($user['password'] != md5($passwordmd5.$user['salt'])) {			$status = -2;		} */elseif($checkques && $user['secques'] != $_ENV['user']->quescrypt($questionid, $answer)) {			$status = -3;		} else {			$status = $user['uid'];		}		if($ip && $this->settings['login_failedtime'] && $status <= 0) {			$_ENV['user']->loginfailed($username, $ip);		}		$merge = $status != -1 && !$isuid && $_ENV['user']->check_mergeuser($username) ? 1 : 0;		return array($status, $user['username'], $password, $user['email'], $merge);	}
 	function onlogin() {
 		$this->init_input();
 		$isuid = $this->input('isuid');
@@ -126,7 +126,6 @@ class usercontrol extends base {
 		} else {
 			$user = $_ENV['user']->get_user_by_username($username);
 		}
-
 		$passwordmd5 = preg_match('/^\w{32}$/', $password) ? $password : md5($password);
 		if(empty($user)) {
 			$status = -1;
